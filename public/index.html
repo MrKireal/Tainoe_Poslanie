@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Тайное Послание (Love Letter)</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Меню Лобби -->
+    <div id="lobby-view" class="card-box">
+      <h2>Тайное Послание</h2>
+      <input type="text" id="username" placeholder="Ваше имя" maxlength="12" /><br/><br/>
+      <button onclick="createRoom()">Создать комнату</button>
+      <div style="margin: 15px 0;">или</div>
+      <input type="text" id="room-code-input" placeholder="Код комнаты" maxlength="4" style="text-transform:uppercase" />
+      <button onclick="joinRoom()">Войти</button>
+    </div>
+
+    <!-- Зал ожидания -->
+    <div id="waiting-view" class="card-box hidden">
+      <h3>Комната: <span id="display-room-code"></span></h3>
+      <p>Ожидание игроков (от 2 до 4)...</p>
+      <ul id="waiting-players-list"></ul>
+      <button id="start-btn" onclick="startGame()">Начать игру</button>
+    </div>
+
+    <!-- Игровой стол -->
+    <div id="game-view" class="hidden">
+      <div class="top-bar">
+        <div>Колода: <span id="deck-count">0</span> карт</div>
+        <div id="turn-indicator">Ход игрока: ...</div>
+      </div>
+
+      <div id="revealed-cards" class="revealed-box hidden">
+        <b>Открытые сброшенные карты (для 2 игроков):</b>
+        <div id="revealed-list" class="cards-row"></div>
+      </div>
+
+      <div id="opponents-zone" class="opponents-grid"></div>
+
+      <div class="table-center" id="round-status"></div>
+
+      <div id="my-zone" class="player-panel">
+        <h3>Ваша рука:</h3>
+        <div id="my-hand" class="cards-row"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно выбора параметров карты -->
+  <div id="action-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modal-title">Применение свойства</h3>
+      <div id="modal-target-zone">
+        <p>Выберите цель:</p>
+        <select id="modal-targets"></select>
+      </div>
+      <div id="modal-guess-zone" class="hidden">
+        <p>Угадайте карту:</p>
+        <select id="modal-guesses">
+          <option value="0">0 — Шпион</option>
+          <option value="2">2 — Священник</option>
+          <option value="3">3 — Барон</option>
+          <option value="4">4 — Служанка</option>
+          <option value="5">5 — Принц</option>
+          <option value="6">6 — Министр</option>
+          <option value="7">7 — Король</option>
+          <option value="8">8 — Графиня</option>
+          <option value="9">9 — Принцесса</option>
+        </select>
+      </div>
+      <br/>
+      <button onclick="confirmCardPlay()">Сыграть</button>
+      <button onclick="closeModal()">Отмена</button>
+    </div>
+  </div>
+
+  <script src="client.js"></script>
+</body>
+</html>
+
